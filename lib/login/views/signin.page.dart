@@ -34,6 +34,7 @@ class _SignInPageState extends State<SignInPage> {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(image: AssetImage('assets/logo.png'))),
                 ),
+                
                 new SizedBox(
                   height: 150,
                 ),
