@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:student/constant/colortheme.dart';
+import 'package:student/grade/view/grade.page.dart';
 import 'package:student/login/views/signin.page.dart';
 
 class SignupFormPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height + 105, //change
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -68,38 +69,63 @@ class _SignupFormPageState extends State<SignupFormPage> {
               new SizedBox(
                 height: 60,
               ),
-               Container(
-                  height: 61,
-                  width: 267,
-                  decoration: BoxDecoration(
+              Container(
+                height: 61,
+                width: 267,
+                decoration: BoxDecoration(
                     color: buttonColor,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        spreadRadius: -2,
-                        blurRadius: 32,
-                        offset: Offset(0, 10)
-                      )
-                    ]
-                  ),
+                          color: Color.fromARGB(25, 0, 0, 0),
+                          spreadRadius: -2,
+                          blurRadius: 32,
+                          offset: Offset(0, 10))
+                    ]),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GradePage(),  //change add
+                        ));
+                  },
                   child: Center(
-                    child: Text("Sign up", style: GoogleFonts.exo(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w600),)
+                      child: Text(
+                    "Sign up",
+                    style: GoogleFonts.exo(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  )),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "You have account? ",
+                    style: GoogleFonts.exo(
+                        fontSize: 18, color: Color.fromARGB(255, 99, 109, 119)),
                   ),
-                ),
-                SizedBox(height: 30,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("You have account? ", style: GoogleFonts.exo(fontSize: 18, color: Color.fromARGB(255, 99, 109, 119)),),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => SignInPage()));
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => SignInPage()));
                       },
-                      child: Text("Sign in", style: GoogleFonts.exo(fontSize: 18, color: buttonColor),)),
-                  ],
-                ),
+                      child: Text(
+                        "Sign in",
+                        style:
+                            GoogleFonts.exo(fontSize: 18, color: buttonColor),
+                      )),
+                ],
+              ),
             ],
           ),
         ),
