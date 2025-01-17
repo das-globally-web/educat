@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:student/constant/colortheme.dart';
+import 'package:student/home/views/home.page.dart';
 import 'package:student/login/views/signupform.page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -79,6 +80,7 @@ class _SignInPageState extends State<SignInPage> {
     return GestureDetector(
       onTap: () {
         // Add sign-in logic here
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => HomePage()));
       },
       child: Container(
         height: 61 * heightScale,
