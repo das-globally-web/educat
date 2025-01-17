@@ -12,10 +12,19 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _emailControler = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Screen dimensions
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Scaling factors
+    double heightScale = screenHeight / 823; // Replace 823 with your design height
+    double widthScale = screenWidth / 411;   // Replace 411 with your design width
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
@@ -27,71 +36,26 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 100,
-                  height: 61.38,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(image: AssetImage('assets/logo.png'))),
-                ),
-                
-                new SizedBox(
-                  height: 150,
-                ),
+                _buildLogo(widthScale, heightScale),
+                SizedBox(height: 150 * heightScale),
                 MyTextField(
-                  lable: 'Email address',
-                  hintTExt: 'name@example.com',
-                  obsucere: false,
-                  controller: _emailControler,
+                  label: 'Email address',
+                  hintText: 'name@example.com',
+                  obscure: false,
+                  controller: _emailController,
                 ),
-                SizedBox(
-                  height: 25,
-                ),
+                SizedBox(height: 25 * heightScale),
                 MyTextField(
-                  lable: 'Password',
-                  hintTExt: '**********',
-                  obsucere: true,
+                  label: 'Password',
+                  hintText: '**********',
+                  obscure: true,
                   controller: _passwordController,
                 ),
-                SizedBox(
-                  height: 60,
-                ),
-          
-                Container(
-                  height: 61,
-                  width: 267,
-                  decoration: BoxDecoration(
-                    color: buttonColor,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        spreadRadius: -2,
-                        blurRadius: 32,
-                        offset: Offset(0, 10)
-                      )
-                    ]
-                  ),
-                  child: Center(
-                    child: Text("Sign In", style: GoogleFonts.exo(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w600),)
-                  ),
-                ),
-                SizedBox(height: 30,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Don't have account? ", style: GoogleFonts.exo(fontSize: 18, color: Color.fromARGB(255, 99, 109, 119)),),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => SignupFormPage()));
-                      },
-                      child: Text("Sign up", style: GoogleFonts.exo(fontSize: 18, color: buttonColor),)),
-                  ],
-                ),
-                SizedBox(
-                  height: 60,
-                )
+                SizedBox(height: 60 * heightScale),
+                _buildSignInButton(context, widthScale, heightScale),
+                SizedBox(height: 30 * heightScale),
+                _buildSignUpPrompt(context, widthScale, heightScale),
+                SizedBox(height: 60 * heightScale),
               ],
             ),
           ),
@@ -99,79 +63,168 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+
+  Widget _buildLogo(double widthScale, double heightScale) {
+    return Container(
+      width: 100 * widthScale,
+      height: 61.38 * heightScale,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10 * widthScale),
+        image: const DecorationImage(image: AssetImage('assets/logo.png')),
+      ),
+    );
+  }
+
+  Widget _buildSignInButton(BuildContext context, double widthScale, double heightScale) {
+    return GestureDetector(
+      onTap: () {
+        // Add sign-in logic here
+      },
+      child: Container(
+        height: 61 * heightScale,
+        width: 267 * widthScale,
+        decoration: BoxDecoration(
+          color: buttonColor,
+          borderRadius: BorderRadius.circular(12 * widthScale),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(25, 0, 0, 0),
+              spreadRadius: -2,
+              blurRadius: 32,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            "Sign In",
+            style: GoogleFonts.exo(
+              fontSize: 20 * widthScale,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpPrompt(BuildContext context, double widthScale, double heightScale) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Don't have an account? ",
+          style: GoogleFonts.exo(
+            fontSize: 18 * widthScale,
+            color: const Color.fromARGB(255, 99, 109, 119),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => const SignupFormPage()),
+            );
+          },
+          child: Text(
+            "Sign up",
+            style: GoogleFonts.exo(
+              fontSize: 18 * widthScale,
+              color: buttonColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class MyTextField extends StatefulWidget {
-  final String lable;
-  final String hintTExt;
-  final bool obsucere;
+  final String label;
+  final String hintText;
+  final bool obscure;
   final TextEditingController controller;
-  const MyTextField(
-      {super.key,
-      required this.lable,
-      required this.hintTExt,
-      required this.obsucere,
-      required this.controller});
+
+  const MyTextField({
+    super.key,
+    required this.label,
+    required this.hintText,
+    required this.obscure,
+    required this.controller,
+  });
 
   @override
   State<MyTextField> createState() => _MyTextFieldState();
 }
 
 class _MyTextFieldState extends State<MyTextField> {
-  bool secure = true;
+  bool isSecure = true;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.lable,
+            widget.label,
             style: GoogleFonts.exo(
-                color: Color.fromARGB(255, 99, 109, 119), fontSize: 16),
+              color: const Color.fromARGB(255, 99, 109, 119),
+              fontSize: 16,
+            ),
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromARGB(05, 0, 0, 0),
-                      spreadRadius: 0,
-                      blurRadius: 6,
-                      offset: Offset(0, 7))
-                ]),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(5, 0, 0, 0),
+                  spreadRadius: 0,
+                  blurRadius: 6,
+                  offset: const Offset(0, 7),
+                ),
+              ],
+            ),
             child: TextFormField(
               controller: widget.controller,
-              obscureText: widget.obsucere == true? secure: false,
+              obscureText: widget.obscure ? isSecure : false,
               decoration: InputDecoration(
-                suffixIcon: widget.obsucere ==true?  GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      secure = !secure;
-                    });
-                  },
-                  child: secure==true? Icon(Icons.visibility_off): Icon(Icons.visibility)) : SizedBox(),
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: widget.hintTExt,
-                  hintStyle: GoogleFonts.roboto(
-                      fontSize: 14, color: Color.fromARGB(255, 54, 67, 86)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8)),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8)),
-                  disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8))),
+                suffixIcon: widget.obscure
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isSecure = !isSecure;
+                          });
+                        },
+                        child: Icon(
+                          isSecure ? Icons.visibility_off : Icons.visibility,
+                        ),
+                      )
+                    : const SizedBox(),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: widget.hintText,
+                hintStyle: GoogleFonts.roboto(
+                  fontSize: 14,
+                  color: const Color.fromARGB(255, 54, 67, 86),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ),
         ],
